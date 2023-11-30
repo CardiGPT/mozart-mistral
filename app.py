@@ -11,7 +11,7 @@ from sentence_transformers import SentenceTransformer
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from langchain_core.messages import BaseMessage
-from langchain_core.models import BaseChatModel
+# from langchain_core.models import BaseChatModel
 from typing import Optional, Any
 
 load_dotenv()
