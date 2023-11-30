@@ -1,18 +1,17 @@
 import os
 import toml
 from dotenv import load_dotenv
-import modal
-from modal import Image, Secret
 from typing import List
-from modal import web_endpoint
+import modal
+from modal import Stub, Image, Secret
 from fastapi.responses import JSONResponse
 import torch
 import random
 from sentence_transformers import SentenceTransformer
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-from vllm import LLM, SamplingParams
-from chat_models.base import BaseMessage
+from langchain_core.messages import BaseMessage
+from langchain_core.models import BaseChatModel
 from typing import Optional, Any
 
 load_dotenv()
@@ -74,6 +73,7 @@ if __name__ == "__main__":
 
 class MozartMistral(BaseChatModel, ABC):
     def __init__(self):
+        from vllm import LLM
         self.llm = LLM(MODEL_PATH, secret=Secret.from_name("mozart-secret"))
 
     def _call(
@@ -83,6 +83,7 @@ class MozartMistral(BaseChatModel, ABC):
             run_manager: Optional[CallbackManagerForLLMRun] = None,
             **kwargs: Any,
     ) -> str:
+        from vllm import SamplingParams
         prompts = [message.content for message in messages]
         sampling_params = SamplingParams(
             temperature=0.75,
