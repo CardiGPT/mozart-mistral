@@ -7,11 +7,14 @@ from modal import Stub, Image, Secret
 from fastapi.responses import JSONResponse
 import torch
 import random
+from abc import ABC
 from sentence_transformers import SentenceTransformer
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+import langchain
 from langchain_core.messages import BaseMessage
-# from langchain_core.models import BaseChatModel
+# from langchain.chat_models.base import BaseChatModel
+from langchain.chat_models.base import BaseChatModel, CallbackManagerForLLMRun
 from typing import Optional, Any
 
 load_dotenv()
@@ -65,7 +68,7 @@ def health():
 
 @stub.local_entrypoint()
 def local_main():
-    request_data = {"texts": ["Wu-Tang Clan climbing Mount Everest"]}
+    request_data = {"texts": ["Introduce yourself as a highly capable ESG analyst"]}
     print(main(request_data))
 
 if __name__ == "__main__":
